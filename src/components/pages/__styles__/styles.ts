@@ -1,5 +1,5 @@
 import { styled } from '@linaria/react'
-
+import { css } from '@linaria/core'
 export const LoginContainer = styled.div`
   min-width: 100vw;
   min-height: 100vh;
@@ -65,4 +65,7 @@ export const LoginImage = styled.img`
   position: absolute;
   height: 100%;
   z-index: 1;
+`
+export const paginationCustom = css`
+  margin: 0;
 `

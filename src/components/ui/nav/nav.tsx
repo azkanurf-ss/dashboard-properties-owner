@@ -62,16 +62,45 @@ export const Nav: FC = () => {
         },
       ],
     },
+    {
+      itemIndex: 6,
+      text: 'Properties',
+      iconId: 'resultsMenu',
+      callback: () => history.push('/properties'),
+    },
+    {
+      itemIndex: 7,
+      text: 'Dashboard',
+      iconId: 'analyticsMenu',
+      callback: navigate(history, Routes.DASHBOARD_PROPERTIES),
+      subItems: [
+        {
+          itemIndex: 1,
+          callback: navigate(history, Routes.DASHBOARD_PROPERTIES),
+          text: 'Property',
+        },
+        {
+          itemIndex: 2,
+          callback: navigate(history, Routes.DASHBOARD_AGENTS),
+          text: 'Agent',
+        },
+        {
+          itemIndex: 3,
+          callback: navigate(history, Routes.DASHBOARD_CLIENTS),
+          text: 'Client',
+        },
+      ],
+    },
   ]
 
   if (!connectIsDesktop) {
     navOptions.push(
-      {
-        itemIndex: 4,
-        callback: () => (window.location.href = window.reapit.config.marketplaceUrl),
-        iconId: 'appsMenu',
-        text: 'Apps',
-      },
+      // {
+      //   itemIndex: 4,
+      //   callback: () => (window.location.href = window.reapit.config.marketplaceUrl),
+      //   iconId: 'appsMenu',
+      //   text: 'Apps',
+      // },
       {
         itemIndex: 5,
         callback: connectLogoutRedirect,
