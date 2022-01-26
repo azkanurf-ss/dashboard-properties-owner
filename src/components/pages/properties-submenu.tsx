@@ -1,18 +1,5 @@
 import React, { useState } from 'react'
-import {
-  PageContainer,
-  BodyText,
-  Subtitle,
-  Icon,
-  Title,
-  SecondaryNavContainer,
-  SecondaryNav,
-  SecondaryNavItem,
-  elMb9,
-  elMb5,
-  Button,
-  FlexContainer,
-} from '@reapit/elements'
+import { BodyText, Subtitle, Icon, Title, Input } from '@reapit/elements'
 import {
   Pie,
   PieChart,
@@ -27,7 +14,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { BiChevronDown } from 'react-icons/bi'
-import { useProperties } from '../../hooks/useProperties'
+// import { useProperties } from '../../hooks/useProperties'
 import { typeOptions } from '../../constants/properties-api-params'
 import { currencyConverter } from '../../utils/currencyConverter'
 
@@ -186,13 +173,16 @@ const PropertiesSubmenu = () => {
               </div>
             </div>
             <div>
-              <select className="el-select el-ml2" onChange={handleYearRevenue}>
+              <Input type="month" />
+              &nbsp; - &nbsp;
+              <Input type="month" />
+              {/* <select className="el-select el-ml2" onChange={handleYearRevenue}>
                 <option value="all-year">All Year</option>
                 <option value="2018">2018</option>
                 <option value="2019">2019</option>
                 <option value="2020">2020</option>
                 <option value="2021">2021</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <RevenueChart>

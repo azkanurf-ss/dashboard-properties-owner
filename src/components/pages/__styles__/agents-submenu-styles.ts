@@ -1,6 +1,8 @@
 import { styled } from '@linaria/react'
 
-export const AgentContainer = styled.main``
+export const AgentContainer = styled.main`
+  background-color: #e3e3e3;
+`
 export const AgentChart = styled.section`
   padding: 1rem;
   background: var(--color-grey-light);
