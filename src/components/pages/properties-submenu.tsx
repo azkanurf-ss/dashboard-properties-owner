@@ -70,15 +70,14 @@ const PropertiesSubmenu = () => {
   }
 
   const handleYearRevenue = (e): void => {
-    switch (e.target.value) {
-      case 'all-year':
-        setChartRevenueData(dataRevenueAllYear)
-        break
-
-      default:
-        setChartRevenueData(dataRevenueOneYear)
-        break
-    }
+    // switch (e.target.value) {
+    //   case 'all-year':
+    //     setChartRevenueData(dataRevenueAllYear)
+    //     break
+    //   default:
+    //     setChartRevenueData(dataRevenueOneYear)
+    //     break
+    // }
   }
   return (
     <PropertiesContainer>
@@ -172,7 +171,7 @@ const PropertiesSubmenu = () => {
                 </Subtitle>
               </div>
             </div>
-            <div>
+            <div className="el-flex el-flex-row el-flex-align-center">
               <Input type="month" />
               &nbsp; - &nbsp;
               <Input type="month" />
