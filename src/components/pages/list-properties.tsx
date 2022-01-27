@@ -16,11 +16,11 @@ import {
   InputGroup,
   Pagination,
   Loader,
-  TableHeadersRow,
-  TableHeader,
-  TableRowContainer,
-  TableRow,
-  TableCell,
+  // TableHeadersRow,
+  // TableHeader,
+  // TableRowContainer,
+  // TableRow,
+  // TableCell,
   // StatusIndicator,
   TableCtaTriggerCell,
   Button,
@@ -38,6 +38,7 @@ import useDebounce from '../../utils/useDebounce'
 import convertText from '../../utils/textConverter'
 // import { rowsForTableProperties } from '../../utils/table'
 // import DropdownSortAndFilter from '../ui/dropdownSortAndFilter'
+import CardProperty from '../ui/card/list-properties'
 import CalendarAppointment from '../ui/calendar/calendar'
 import ModalSortAndFilter from '../ui/modal/modal-sort-and-filter'
 import { paginationCustom } from './__styles__/styles'
@@ -63,7 +64,7 @@ export interface PropertiesFilterParams {
 
 const Appointment: React.FC<{}> = () => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
-  const history = useHistory()
+  // const history = useHistory()
   const [address, setAddress] = useState<string>('')
   const debounceAddress = useDebounce(address, 500)
   const [negotiatorsId, setNegotiatorsId] = useState<string | undefined>()
@@ -181,41 +182,7 @@ const Appointment: React.FC<{}> = () => {
         )}
       </HeaderWrapper>
       {allPropertiesV2?.isLoading && <Loader className="el-mx-auto el-mt4" />}
-      {allPropertiesV2?.data?._embedded && (
-        <Table data-num-columns-excl-action-col="7" data-has-call-to-action>
-          <TableHeadersRow>
-            {['Property Id', 'Type', 'Address', 'Bedrooms', 'Bathrooms', 'Price', 'Status', ''].map((data, index) => (
-              <TableHeader key={index}>{data}</TableHeader>
-            ))}
-          </TableHeadersRow>
-          <TableRowContainer>
-            {allPropertiesV2?.data?._embedded &&
-              allPropertiesV2?.data?._embedded.map((data: PropertyModel, index) => (
-                <TableRow key={index}>
-                  <TableCell>{data?.id}</TableCell>
-                  <TableCell>{data?.type?.length ? data?.type[0] : '-'}</TableCell>
-                  <TableCell>{data?.address?.buildingName || '-'}</TableCell>
-                  <TableCell>{data?.bedrooms}</TableCell>
-                  <TableCell>{data?.bathrooms}</TableCell>
-                  <TableCell>
-                    {propertiesParam.marketingMode === 'selling' ? data?.selling?.price : data?.letting?.rent}
-                    {data?.currency}
-                  </TableCell>
-                  <TableCell>
-                    {propertiesParam.marketingMode === 'selling'
-                      ? convertText(data?.selling?.status)
-                      : convertText(data?.letting?.status)}
-                  </TableCell>
-                  {/* <TableCtaTriggerCell
-                      icon='calendarSystem'
-                      onClick={() => handleCalendarClicked(data)}
-                    /> */}
-                  <TableCtaTriggerCell icon="arrowRightSystem" onClick={() => history.push(`/property/${data?.id}`)} />
-                </TableRow>
-              ))}
-          </TableRowContainer>
-        </Table>
-      )}
+      {allPropertiesV2?.data?._embedded && <CardProperty properties={allPropertiesV2?.data?._embedded} />}
       {allPropertiesV2?.data?.totalPageCount && (
         <div className="el-mt8">
           <Pagination

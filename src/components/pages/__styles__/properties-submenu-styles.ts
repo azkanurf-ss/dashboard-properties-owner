@@ -26,16 +26,34 @@ export const OverviewCard = styled.div`
 `
 
 export const RevenueCard = styled.section`
-  padding: 1rem;
   background: var(--color-grey-light);
-  min-width: 475px;
-  /* height: max-content; */
-  min-height: 320px;
+  padding: 1rem;
   margin-left: 1rem;
+  border-radius: 0.25rem;
+  min-width: 475px;
+  min-height: 320px;
+  /* height: max-content; */
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .filter-section {
+    .option-btn {
+      font-size: 0.75rem;
+      height: fit-content;
+      padding: 0.5rem 1.25rem;
+
+      &.selected {
+        background-image: linear-gradient(to right, var(--intent-primary), var(--intent-primary));
+        color: var(--intent-primary-text);
+        outline-color: var(--intent-primary-dark);
+      }
+    }
+    input[type='month'] {
+      width: 180px;
+    }
+  }
 
   .chart-summary {
     display: flex;
@@ -81,8 +99,12 @@ export const WrapperPropertiesChart = styled.section`
 `
 
 export const ListPropertiesWrapper = styled.section`
-  /* margin-top: 2rem; */
+  background: var(--color-grey-light);
   position: relative;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  /* margin-top: 2rem; */
+
   .main-list {
     display: flex;
     flex-direction: row;
@@ -104,8 +126,8 @@ export const ListPropertiesWrapper = styled.section`
     align-items: flex-end;
     justify-content: center;
     bottom: -24px;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.25));
-    color: white;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(242, 242, 242, 1));
+    color: black;
     font-size: 2.5rem;
   }
 `
@@ -132,5 +154,3 @@ export const CardSingleProperty = styled.div`
     margin: 0.25rem;
   }
 `
-
-export const PropertyCard = styled.div``

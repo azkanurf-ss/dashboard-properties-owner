@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BodyText, Subtitle, Icon, Title, Input } from '@reapit/elements'
+import { BodyText, Subtitle, Icon, Title, Input, Button } from '@reapit/elements'
 import {
   Pie,
   PieChart,
@@ -55,6 +55,7 @@ const dummyListProperties = [
   { image: dummy4, address: 'Building Plot at Carmel', price: 23800 },
 ]
 const PropertiesSubmenu = () => {
+  const [revenueFilter, setRevenueFilter] = useState({ type: 'year', from: '', to: '' })
   const history = useHistory()
   const RADIAN = Math.PI / 180
   const [chartRevenueData, setChartRevenueData] = useState<RevenueChartTypes[]>(dataRevenueAllYear)
@@ -154,7 +155,7 @@ const PropertiesSubmenu = () => {
           </OverviewCard>
         </OverviewPropertiesWrapper>
         <RevenueCard>
-          <div className="el-flex el-flex-row el-flex-justify-between el-flex-align-end">
+          <div className="el-flex el-flex-row el-flex-justify-between el-flex-align-start">
             <div className="chart-summary">
               <div className="title">
                 <Title hasNoMargin hasGreyText>
@@ -171,18 +172,41 @@ const PropertiesSubmenu = () => {
                 </Subtitle>
               </div>
             </div>
-            <div className="el-flex el-flex-row el-flex-align-center">
-              <Input type="month" />
-              &nbsp; - &nbsp;
-              <Input type="month" />
-              {/* <select className="el-select el-ml2" onChange={handleYearRevenue}>
-                <option value="all-year">All Year</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-              </select> */}
+            <div className="el-flex el-flex-column filter-section">
+              <div className="el-flex el-flex-justify-end">
+                <Button
+                  className={`option-btn ${revenueFilter?.type === 'year' ? 'selected' : ''}`}
+                  onClick={() => setRevenueFilter({ ...revenueFilter, type: 'year' })}
+                >
+                  Year
+                </Button>
+                <Button
+                  className={`option-btn el-ml3 ${revenueFilter?.type === 'month' ? 'selected' : ''}`}
+                  onClick={() => setRevenueFilter({ ...revenueFilter, type: 'month' })}
+                >
+                  Month
+                </Button>
+              </div>
+              {revenueFilter.type === 'month' && (
+                <div className="el-flex el-flex-row el-flex-align-center el-mt3">
+                  <Input type="month" />
+                  &nbsp; - &nbsp;
+                  <Input type="month" />
+                </div>
+              )}
+              {revenueFilter.type === 'year' && (
+                <div className="el-flex el-flex-row el-flex-align-center el-mt3">
+                  <Input type="text" />
+                  &nbsp; - &nbsp;
+                  <Input type="text" />
+                </div>
+              )}
             </div>
+          </div>
+          <div className="el-flex el-flex-justify-center">
+            <Subtitle hasNoMargin hasGreyText className="el-py4">
+              2018 - 2021
+            </Subtitle>
           </div>
           <RevenueChart>
             <ResponsiveContainer width="100%" height={400}>
