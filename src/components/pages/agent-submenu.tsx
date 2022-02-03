@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { reapitConnectBrowserSession } from '../../core/connect-session'
+import { useReapitConnect } from '@reapit/connect-session'
 import { Icon, Title, Subtitle } from '@reapit/elements'
 import { BarChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts'
 
+import { useNegotiatorByOfficeQuery } from '../../generated/graphql'
 import { totalAgentsAllYear, totalAgentsOneYear } from '../../constants/agent-submenu'
 import { AgentChart, SideInfo, ListAgentWrapper } from './__styles__/agents-submenu-styles'
+import graphQLRequestClient from '../../platform-api/graphqlClient'
 
 type Props = {}
 
 const AgentsSubmenu = (props: Props) => {
+  const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   const [dataTotalAgent, setDataTotalAgent] = useState(totalAgentsAllYear)
-
+  const agentList = useNegotiatorByOfficeQuery(graphQLRequestClient)
+  console.log({ agentList })
   const handleYearAgent = (e): void => {
     switch (e.target.value) {
       case 'all-year':
@@ -20,6 +26,15 @@ const AgentsSubmenu = (props: Props) => {
         break
     }
   }
+
+  useEffect(() => {
+    if (!connectSession) return
+    graphQLRequestClient.setHeaders({
+      // ...BASE_HEADERS,
+      authorization: connectSession.idToken,
+      'reapit-connect-token': connectSession.accessToken,
+    })
+  }, [connectSession])
 
   return (
     <main>

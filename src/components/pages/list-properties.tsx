@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { reapitConnectBrowserSession } from '../../core/connect-session'
 import { useReapitConnect } from '@reapit/connect-session'
-import {
-  // PropertyModelPagedResult,
-  PropertyModel,
-} from '@reapit/foundations-ts-definitions'
+// import {
+//   PropertyModelPagedResult,
+//   PropertyModel,
+// } from '@reapit/foundations-ts-definitions'
 import { useHistory } from 'react-router-dom'
 import {
   Title,
   // Subtitle,
-  Table,
+  // Table,
   // StatusIndicator,
   // Icon,
   // Input,
@@ -22,7 +22,7 @@ import {
   // TableRow,
   // TableCell,
   // StatusIndicator,
-  TableCtaTriggerCell,
+  // TableCtaTriggerCell,
   Button,
   PageContainer,
   // FloatingButton,
@@ -35,7 +35,7 @@ import { useProperties } from '../../hooks/useProperties'
 import { useAppoinments } from '../../hooks/useAppointments'
 import { useSingleNegotiator } from '../../hooks/useNegotiators'
 import useDebounce from '../../utils/useDebounce'
-import convertText from '../../utils/textConverter'
+// import convertText from '../../utils/textConverter'
 // import { rowsForTableProperties } from '../../utils/table'
 // import DropdownSortAndFilter from '../ui/dropdownSortAndFilter'
 import CardProperty from '../ui/card/list-properties'
@@ -90,13 +90,6 @@ const Appointment: React.FC<{}> = () => {
   })
   const appointment = useAppoinments(connectSession, { negotiatorsId })
   const negotiators = useSingleNegotiator(connectSession, { id: negotiatorsId })
-
-  // const handleCalendarClicked = (dataProperties: PropertyModel) => {
-  //   if (dataProperties?.id) {
-  //     setNegotiatorsId(dataProperties?.negotiatorId)
-  //     setModalCalendar({ isOpen: true, propertyId: dataProperties?.id })
-  //   }
-  // }
 
   const handleSortSelected = (e, name: string) => {
     setPropertiesParam({ ...propertiesParam, [name]: e.target.value })

@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import '@reapit/elements/dist/index.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'pure-react-carousel/dist/react-carousel.es.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const queryClient = new QueryClient()
 

@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react'
+import { css } from '@linaria/core'
 
 export const PropertiesContainer = styled.main`
   display: flex;
@@ -153,4 +154,8 @@ export const CardSingleProperty = styled.div`
   .additional-info {
     margin: 0.25rem;
   }
+`
+
+export const customYearInput = css`
+  max-width: 120px;
 `

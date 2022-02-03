@@ -16,7 +16,7 @@ type PropertiesParams = {
   officeId?: string
 }
 export const useProperties = (session: ReapitConnectSession | null, params: PropertiesParams) => {
-  const { pageSize, currentPage, sortBy = '', sortType, address, marketingMode, type, style, officeId } = params
+  const { pageSize, currentPage, sortBy = '', sortType = '', address, marketingMode, type, style, officeId } = params
   return useQuery<PropertyModelPagedResult, Error>(
     [
       'properties',

@@ -10,3 +10,4 @@ export const URLS = {
   NEGOTIATORS: '/negotiators',
   APPOINTMENT: '/appointments',
 }
+export const GRAPHQL_ENDPOINT = 'https://graphql.reapit.cloud/graphql'

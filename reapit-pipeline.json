@@ -1,0 +1,10 @@
+{
+  "id": "a25abf63-ad8a-4831-83dd-3e9c94a00ec9",
+  "appId": "a25abf63-ad8a-4831-83dd-3e9c94a00ec9",
+  "subDomain": "trusty-crow",
+  "packageManager": "npm",
+  "repospitory": "https://github.com/azkanurf-ss/dashboard-properties-owner",
+  "buildDir": "build",
+  "outDir": "build",
+  "developerId": "b72c47c8-ec70-4c23-9ac8-ea5b74ee2d1e"
+}

@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { reapitConnectBrowserSession } from '../../core/connect-session'
+import { useReapitConnect } from '@reapit/connect-session'
 import { BodyText, Subtitle, Icon, Title, Input, Button } from '@reapit/elements'
 import {
   Pie,
@@ -14,9 +16,14 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { BiChevronDown } from 'react-icons/bi'
-// import { useProperties } from '../../hooks/useProperties'
+import DatePicker from 'react-datepicker'
+
+import graphQLRequestClient from '../../platform-api/graphqlClient'
+import { useGetAllPropertiesQuery } from '../../generated/graphql'
+import { useProperties } from '../../hooks/useProperties'
 import { typeOptions } from '../../constants/properties-api-params'
-import { currencyConverter } from '../../utils/currencyConverter'
+// import { currencyConverter } from '../../utils/currencyConverter'
+import CardProperty from '../ui/card/list-properties'
 
 import {
   PropertiesContainer,
@@ -26,7 +33,8 @@ import {
   ListPropertiesWrapper,
   RevenueChart,
   WrapperPropertiesChart,
-  CardSingleProperty,
+  // CardSingleProperty,
+  customYearInput,
 } from './__styles__/properties-submenu-styles'
 import {
   dataPropertyForSaleAll,
@@ -37,28 +45,28 @@ import {
   RevenueChartTypes,
 } from '../../constants/properties-submenu'
 
-import dummy1 from '../../assets/dummy/dummy-prop-1.webp'
-import dummy2 from '../../assets/dummy/dummy-property-2.webp'
-import dummy3 from '../../assets/dummy/dummy-property-1.webp'
-import dummy4 from '../../assets/dummy/dummy-plot-1.jpg'
+// import dummy1 from '../../assets/dummy/dummy-prop-1.webp'
+// import dummy2 from '../../assets/dummy/dummy-property-2.webp'
+// import dummy3 from '../../assets/dummy/dummy-property-1.webp'
+// import dummy4 from '../../assets/dummy/dummy-plot-1.jpg'
 import { navigate } from '../../utils/navigation'
 import { Routes } from '../../constants/routes'
 import { useHistory } from 'react-router'
 
-const dummyListProperties = [
-  { image: dummy1, address: '19, Grey Stone', price: 20000 },
-  { image: dummy3, address: '23, Hillside', price: 14000 },
-  { image: dummy2, address: '40, The Limes', price: 43500 },
-  { image: dummy4, address: 'Building Plot at Carmel', price: 23800 },
-  { image: dummy3, address: '23, Hillside', price: 14000 },
-  { image: dummy1, address: '19, Grey Stone', price: 20000 },
-  { image: dummy4, address: 'Building Plot at Carmel', price: 23800 },
-]
 const PropertiesSubmenu = () => {
-  const [revenueFilter, setRevenueFilter] = useState({ type: 'year', from: '', to: '' })
+  const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   const history = useHistory()
   const RADIAN = Math.PI / 180
+  const [revenueFilter, setRevenueFilter] = useState<{ type: string; from: any; to: any }>({
+    type: 'year',
+    from: new Date(2018, 11, 24, 10, 33, 30, 0),
+    to: new Date(2021, 11, 24, 10, 33, 30, 0),
+  })
   const [chartRevenueData, setChartRevenueData] = useState<RevenueChartTypes[]>(dataRevenueAllYear)
+  const allProperties = useProperties(connectSession, { pageSize: 12, currentPage: 1, sortBy: '-price' })
+  const propertiesFromGQL = useGetAllPropertiesQuery(graphQLRequestClient)
+  console.log({ propertiesFromGQL })
+
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const x = cx + radius * Math.cos(-midAngle * RADIAN)
@@ -70,15 +78,18 @@ const PropertiesSubmenu = () => {
     )
   }
 
-  const handleYearRevenue = (e): void => {
-    // switch (e.target.value) {
-    //   case 'all-year':
-    //     setChartRevenueData(dataRevenueAllYear)
-    //     break
-    //   default:
-    //     setChartRevenueData(dataRevenueOneYear)
-    //     break
-    // }
+  useEffect(() => {
+    if (!connectSession) return
+    graphQLRequestClient.setHeaders({
+      // ...BASE_HEADERS,
+      authorization: connectSession.idToken,
+      'reapit-connect-token': connectSession.accessToken,
+    })
+  }, [connectSession])
+
+  const handleDateRevenue = (value, name): void => {
+    console.log({ value, name })
+    setRevenueFilter({ ...revenueFilter, [name]: value })
   }
   return (
     <PropertiesContainer>
@@ -176,36 +187,60 @@ const PropertiesSubmenu = () => {
               <div className="el-flex el-flex-justify-end">
                 <Button
                   className={`option-btn ${revenueFilter?.type === 'year' ? 'selected' : ''}`}
-                  onClick={() => setRevenueFilter({ ...revenueFilter, type: 'year' })}
+                  onClick={() => setRevenueFilter({ type: 'year', from: '', to: '' })}
                 >
                   Year
                 </Button>
                 <Button
                   className={`option-btn el-ml3 ${revenueFilter?.type === 'month' ? 'selected' : ''}`}
-                  onClick={() => setRevenueFilter({ ...revenueFilter, type: 'month' })}
+                  onClick={() => setRevenueFilter({ type: 'month', from: '', to: '' })}
                 >
                   Month
                 </Button>
               </div>
               {revenueFilter.type === 'month' && (
                 <div className="el-flex el-flex-row el-flex-align-center el-mt3">
-                  <Input type="month" />
+                  <Input
+                    type="month"
+                    onChange={(e) => handleDateRevenue(e.target.value, 'from')}
+                    value={revenueFilter.from}
+                  />
                   &nbsp; - &nbsp;
-                  <Input type="month" />
+                  <Input
+                    type="month"
+                    onChange={(e) => handleDateRevenue(e.target.value, 'to')}
+                    value={revenueFilter.to}
+                  />
                 </div>
               )}
               {revenueFilter.type === 'year' && (
                 <div className="el-flex el-flex-row el-flex-align-center el-mt3">
-                  <Input type="text" />
+                  <DatePicker
+                    // selected={startDate}
+                    onChange={(e) => handleDateRevenue(e, 'from')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                    className={customYearInput}
+                    selected={revenueFilter.from}
+                  />
                   &nbsp; - &nbsp;
-                  <Input type="text" />
+                  <DatePicker
+                    // selected={startDate}
+                    onChange={(e) => handleDateRevenue(e, 'to')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                    className={customYearInput}
+                    selected={revenueFilter.to}
+                  />
                 </div>
               )}
             </div>
           </div>
           <div className="el-flex el-flex-justify-center">
             <Subtitle hasNoMargin hasGreyText className="el-py4">
-              2018 - 2021
+              {revenueFilter.type === 'year' && revenueFilter.from
+                ? `${new Date(revenueFilter?.from).getFullYear()} - ${new Date(revenueFilter?.to).getFullYear()}`
+                : `${revenueFilter.from}  - ${revenueFilter.to}`}
             </Subtitle>
           </div>
           <RevenueChart>
@@ -233,28 +268,13 @@ const PropertiesSubmenu = () => {
       <ListPropertiesWrapper>
         <div className="el-flex el-flex-row el-flex-justify-between el-flex-align-end">
           <Title hasNoMargin className="el-pb6">
-            All Properties
+            {/* All Properties */}
           </Title>
-          {/* <div>Filter by recent add, recent sold</div> */}
         </div>
-        <div className="main-list">
-          {dummyListProperties.map((data, index) => (
-            <CardSingleProperty key={index}>
-              <img alt="property-img" src={data.image} />
-              <p className="title">{data?.address}</p>
-              <div className="additional-info">
-                <BodyText hasGreyText>{currencyConverter(data?.price, 'GBP')}</BodyText>
-
-                <p>-property type</p>
-                <p>-agent who in charge</p>
-                <p>-selling/renting status</p>
-              </div>
-            </CardSingleProperty>
-          ))}
-        </div>
+        {allProperties?.data?._embedded && <CardProperty properties={allProperties?.data?._embedded} />}
         <div className="see-more" onClick={navigate(history, Routes.PROPERTIES)}>
           <BiChevronDown size={48} />
-          <p>See More</p>
+          <p>See All Properties</p>
         </div>
       </ListPropertiesWrapper>
     </PropertiesContainer>

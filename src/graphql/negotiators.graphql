@@ -1,0 +1,17 @@
+query NegotiatorByOffice($OfficeId: [String!]) {
+  GetNegotiators(officeId: $OfficeId) {
+    pageSize
+    pageNumber
+    pageCount
+    totalCount
+    _embedded {
+      id
+      jobTitle
+      name
+      email
+      workPhone
+      mobilePhone
+      created
+    }
+  }
+}
