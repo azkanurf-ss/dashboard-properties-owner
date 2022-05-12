@@ -6,7 +6,7 @@ import { URLS, BASE_HEADERS } from '../constants/api'
 
 export const useSinglePropertyImages = (
   session: ReapitConnectSession | null,
-  { propertyId, embed }: { propertyId: string; embed?: string[] }
+  { propertyId, embed }: { propertyId: string; embed?: string[] },
 ) => {
   return useQuery<PropertyImageModel, Error>(
     ['property-images', { propertyId }],
@@ -27,6 +27,6 @@ export const useSinglePropertyImages = (
     {
       enabled: !!session && !!propertyId,
       retry: false,
-    }
+    },
   )
 }

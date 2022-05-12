@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router'
-import { BodyText, Button, SmallText, Title, Subtitle } from '@reapit/elements'
+import { BodyText, Button, SmallText, Title } from '@reapit/elements'
 import { PropertyModel } from '@reapit/foundations-ts-definitions'
 
 import convertText from '../../../utils/textConverter'
